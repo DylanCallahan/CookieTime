@@ -2,6 +2,7 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 500,
+  pixelArt: true,
   parent: 'game-container',
   physics: {
     default: 'arcade',
@@ -15,7 +16,7 @@ const game = new Phaser.Game(config);
 let player, cursors, platforms;
 
 function preload() {
-  // Load assets here later (sprites, tiles, etc.)
+  this.load.image('player', 'assets/images/player.png');
 }
 
 function create() {
@@ -35,9 +36,10 @@ function create() {
   platforms.add(p2);
 
   // Player
-  player = this.add.rectangle(100, 400, 32, 48, 0xff6b6b);
-  this.physics.add.existing(player);
+  player = this.physics.add.sprite(100, 400, 'player');
+  player.setCollideWorldBounds(true);
   player.body.setCollideWorldBounds(true);
+  player.setScale(2);
 
   // Collisions
   this.physics.add.collider(player, platforms);
@@ -51,13 +53,16 @@ function update() {
 
   if (cursors.left.isDown) {
     player.body.setVelocityX(-220);
+    player.angle -=4;
   } else if (cursors.right.isDown) {
     player.body.setVelocityX(220);
+    player.angle += 4; //rotate speed type
   } else {
     player.body.setVelocityX(0);
   }
 
   if (cursors.up.isDown && onGround) {
     player.body.setVelocityY(-550);
+    
   }
 }
