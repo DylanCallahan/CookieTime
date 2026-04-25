@@ -1,3 +1,7 @@
+const API_BASE = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000'
+  : 'https://cookie-time-jet.vercel.app';
+
 class SPY500 extends Phaser.Scene {
   constructor() {
     super({ key: 'SPY500' });
@@ -54,9 +58,8 @@ class SPY500 extends Phaser.Scene {
 
   async fetchPrice() {
     try {
-      const res = await fetch(
-        `'/api/stocks?symbol=SPY` //yoink spy from api via custom key routing
-      );
+
+      const res = await fetch(`${API_BASE}/api/stocks?symbol=SPY`);
       const quote = await res.json();
       console.log('Quote:', quote);
 
