@@ -59,7 +59,7 @@ class SPY500 extends Phaser.Scene {
   async fetchPrice() {
     try {
 
-      const res = await fetch(`${API_BASE}/api/stocks?symbol=SPY`);
+      const res = await fetch('/api/stocks?symbol=SPY');
       const quote = await res.json();
       console.log('Quote:', quote);
 
