@@ -1,7 +1,3 @@
-const API_BASE = window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000'
-  : 'https://cookie-time-jet.vercel.app';
-
 class SPY500 extends Phaser.Scene {
   constructor() {
     super({ key: 'SPY500' });
