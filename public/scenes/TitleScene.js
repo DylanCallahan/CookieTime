@@ -23,14 +23,17 @@ class TitleScene extends Phaser.Scene {
       fill: '#aaaaaa'
     }).setOrigin(0.5);
 
-    // Level 1 button
+    //bnuttons
     this.createButton(cx, 280, 'Level 1', () => {
       this.scene.start('Level1Scene');
     });
 
-    // stock market button
     this.createButton(cx, 360, 'Level 2', () => {
       this.scene.start('SPY500');
+    });
+    
+    this.createButton(cx, 440, 'All Time Highs', () =>{
+        this.scene.start('AllTimeHighs');
     });
   }
 
