@@ -220,7 +220,7 @@ class AllTimeHighs extends Phaser.Scene {
 
   // Spawn player at first candle low
   const startX = 100;
-  const startY = this.priceToY(this.candleData[0].l, chartTop, chartBottom) - 40;
+  const startY = this.priceToY(this.candleData[0].h, chartTop, chartBottom) - 60;
   this.player = this.physics.add.sprite(startX, startY, 'player');
   this.player.setCollideWorldBounds(true);
   this.player.setScale(2);
