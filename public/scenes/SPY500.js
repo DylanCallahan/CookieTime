@@ -1,3 +1,4 @@
+const IS_LOCAL = window.location.hostname === 'localhost';
 class SPY500 extends Phaser.Scene {
   constructor() {
     super({ key: 'SPY500' });
@@ -53,47 +54,47 @@ class SPY500 extends Phaser.Scene {
   }
 
   async fetchPrice() {
-    try {
+  try {
+    const url = IS_LOCAL
+      ? 'https://finnhub.io/api/v1/quote?symbol=SPY&token=LOCAL TESTING TYPE' //remove before push
+      : '/api/stocks?symbol=SPY';
 
-      const res = await fetch('/api/stocks?symbol=SPY');
-      const quote = await res.json();
-      console.log('Quote:', quote);
+    const res = await fetch(url);
+    const quote = await res.json();
+    console.log('Quote:', quote);
 
-      if (!quote.c) return;
+    if (!quote.c) return;
 
-      // Record timestamp and price
-      const now = new Date();
-      const timeLabel = now.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
+    const now = new Date();
+    const timeLabel = now.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
 
-      // Add to history, cap at maxPoints
-      this.priceHistory.push({ price: quote.c, time: timeLabel });
-      if (this.priceHistory.length > this.maxPoints) {
-        this.priceHistory.shift();  // remove oldest point
-      }
-
-      // Update price display
-      const change = quote.c - quote.pc;
-      const changePercent = ((change / quote.pc) * 100).toFixed(2);
-      const arrow = change >= 0 ? '▲' : '▼';
-      const color = change >= 0 ? '#00ff88' : '#ff4444';
-
-      this.priceText.setText(
-        `SPY $${quote.c.toFixed(2)}  ${arrow} ${changePercent}%`
-      );
-      this.priceText.setStyle({ fill: color });
-      this.timerText.setText(`Last updated: ${timeLabel}`);
-
-      this.drawChart();
-
-    } catch (err) {
-      this.priceText.setText('Failed to load price');
-      console.error('API error:', err);
+    this.priceHistory.push({ price: quote.c, time: timeLabel });
+    if (this.priceHistory.length > this.maxPoints) {
+      this.priceHistory.shift();
     }
+
+    const change = quote.c - quote.pc;
+    const changePercent = ((change / quote.pc) * 100).toFixed(2);
+    const arrow = change >= 0 ? '▲' : '▼';
+    const color = change >= 0 ? '#00ff88' : '#ff4444';
+
+    this.priceText.setText(
+      `SPY $${quote.c.toFixed(2)}  ${arrow} ${changePercent}%`
+    );
+    this.priceText.setStyle({ fill: color });
+    this.timerText.setText(`Last updated: ${timeLabel}`);
+
+    this.drawChart();
+
+  } catch (err) {
+    this.priceText.setText('Failed to load price');
+    console.error('API error:', err);
   }
+}
 
   drawChart() {
     this.chartGraphics.clear();
