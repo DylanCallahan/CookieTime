@@ -99,6 +99,9 @@ class AllTimeHighs extends Phaser.Scene {
 
     // Get previous trading day
     const date = this.getPreviousTradingDay();
+    console.log('Day of week:', new Date(date).getDay()); // 0=Sun, 6=Sat, 5=Fri
+    console.log('Date:', date);
+
 
     try {
       const IS_LOCAL = window.location.hostname === 'localhost'; //local hard testing type 
@@ -108,6 +111,9 @@ class AllTimeHighs extends Phaser.Scene {
 
       const res = await fetch(url);
       const data = await res.json();
+      console.log('Full API response:', data);
+    console.log('Date being fetched:', date);
+    console.log('URL being called:', url);
 
       console.log('Candle data:', data);
 
@@ -127,25 +133,19 @@ class AllTimeHighs extends Phaser.Scene {
   }
 
   getPreviousTradingDay() {
-   const date = new Date();
-  
-  // Convert to ET
-  const etHour = new Date().toLocaleString('en-US', { 
-    timeZone: 'America/New_York', 
-    hour: 'numeric', 
-    hour12: false 
-  });
+   const now = new Date();
+  // Use local date parts to avoid UTC timezone shift
+  const date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  date.setDate(date.getDate() - 1);
 
-  // If after 6PM ET, data might not be processed yet — go back 2 days
-  const daysBack = parseInt(etHour) >= 18 ? 2 : 1;
-  date.setDate(date.getDate() - daysBack);
-
-  // Keep stepping back until weekday
   while (date.getDay() === 0 || date.getDay() === 6) {
     date.setDate(date.getDate() - 1);
   }
 
-  return date.toISOString().split('T')[0];
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
   }
 
  buildMap() {
