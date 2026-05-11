@@ -246,6 +246,12 @@ class AllTimeHighs extends Phaser.Scene {
 
   this.buildUI();
   this.cursors = this.input.keyboard.createCursorKeys();
+this.wasd = {
+  up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+  left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+  down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+  right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+    };
   this.lastY = this.player.y;
 }
 
@@ -333,49 +339,51 @@ class AllTimeHighs extends Phaser.Scene {
     this.updateHealthBar();
   }
 
-  update() {
-    if (!this.player || !this.cursors) return;
+update() {
+  if (!this.player || !this.cursors) return;
 
-    const onGround = this.player.body.blocked.down;
+  const onGround = this.player.body.blocked.down;
 
-    // Jump height based on health tier
-    const jumpPower = this.healthTier === 'healthy' ? -550
-      : this.healthTier === 'tired' ? -450
-      : -350;
+  const jumpPower = this.healthTier === 'healthy' ? -550
+    : this.healthTier === 'tired' ? -450
+    : -350;
 
-    const speed = this.healthTier === 'tired' ? 180
-      : this.healthTier === 'critical' ? 140
-      : 220;
+  const speed = this.healthTier === 'healthy' ? 220
+    : this.healthTier === 'tired' ? 180
+    : 140;
 
-    if (this.cursors.left.isDown) {
-      this.player.body.setVelocityX(-speed);
-      this.player.angle -= 4;
-    } else if (this.cursors.right.isDown) {
-      this.player.body.setVelocityX(speed);
-      this.player.angle += 4;
-    } else {
-      this.player.body.setVelocityX(0);
-    }
-
-    if (this.cursors.up.isDown && onGround) {
-      this.player.body.setVelocityY(jumpPower);
-    }
-
-    // Fall damage
-    if (onGround && this.lastY < this.player.y) {
-      const fallDistance = this.player.y - this.lastY;
-      if (fallDistance > 150) {
-        const damage = Math.floor(fallDistance / 50);
-        this.health = Math.max(0, this.health - damage);
-        this.updateHealthBar();
-      }
-    }
-
-    if (!onGround) {
-      this.lastY = this.player.y;
-    }
-
-    // Item collection
-    this.physics.overlap(this.player, this.items, this.collectItem, null, this);
+  // Left
+  if (this.cursors.left.isDown || this.wasd.left.isDown) {
+    this.player.body.setVelocityX(-speed);
+    this.player.angle -= 4;
+  // Right
+  } else if (this.cursors.right.isDown || this.wasd.right.isDown) {
+    this.player.body.setVelocityX(speed);
+    this.player.angle += 4;
+  } else {
+    this.player.body.setVelocityX(0);
   }
+
+  // Jump
+  if ((this.cursors.up.isDown || this.wasd.up.isDown) && onGround) {
+    this.player.body.setVelocityY(jumpPower);
+  }
+
+  // Fall damage
+  if (onGround && this.lastY < this.player.y) {
+    const fallDistance = this.player.y - this.lastY;
+    if (fallDistance > 150) {
+      const damage = Math.floor(fallDistance / 50);
+      this.health = Math.max(0, this.health - damage);
+      this.updateHealthBar();
+    }
+  }
+
+  if (!onGround) {
+    this.lastY = this.player.y;
+  }
+
+  // Item collection
+  this.physics.overlap(this.player, this.items, this.collectItem, null, this);
+}
 }
