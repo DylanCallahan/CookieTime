@@ -127,12 +127,25 @@ class AllTimeHighs extends Phaser.Scene {
   }
 
   getPreviousTradingDay() {
-    const date = new Date();
+   const date = new Date();
+  
+  // Convert to ET
+  const etHour = new Date().toLocaleString('en-US', { 
+    timeZone: 'America/New_York', 
+    hour: 'numeric', 
+    hour12: false 
+  });
+
+  // If after 6PM ET, data might not be processed yet — go back 2 days
+  const daysBack = parseInt(etHour) >= 18 ? 2 : 1;
+  date.setDate(date.getDate() - daysBack);
+
+  // Keep stepping back until weekday
+  while (date.getDay() === 0 || date.getDay() === 6) {
     date.setDate(date.getDate() - 1);
-    // Skip weekends
-    if (date.getDay() === 0) date.setDate(date.getDate() - 2); // Sunday
-    if (date.getDay() === 6) date.setDate(date.getDate() - 1); // Saturday
-    return date.toISOString().split('T')[0];
+  }
+
+  return date.toISOString().split('T')[0];
   }
 
  buildMap() {
