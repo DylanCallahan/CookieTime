@@ -5,44 +5,35 @@ class TitleScene extends Phaser.Scene {
 
   create() {
     const cx = this.scale.width / 2;
-    const cy = this.scale.height / 2;
 
-    // Background color
     this.cameras.main.setBackgroundColor('#1a1a2e');
 
-    // Title text
-    this.add.text(cx, 120, 'MY GAME', {
-      fontSize: '64px',
+    this.add.text(cx, 200, 'COOKIETIME', {
+      fontSize: '72px',
       fill: '#ffffff',
       fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    // Subtitle
-    this.add.text(cx, 190, 'Choose a level to start', {
+    this.add.text(cx, 290, 'a game about me', {
       fontSize: '20px',
-      fill: '#aaaaaa'
+      fill: '#555577'
     }).setOrigin(0.5);
 
-    //bnuttons
-    this.createButton(cx, 280, 'Level 1', () => {
-      this.scene.start('Level1Scene');
+    this.createButton(cx, 400, 'All Time Highs', () => {
+      this.scene.start('AllTimeHighs');
     });
 
-    this.createButton(cx, 360, 'Level 2', () => {
-      this.scene.start('SPY500');
-    });
-    
-    this.createButton(cx, 440, 'All Time Highs', () =>{
-        this.scene.start('AllTimeHighs');
+    this.createButton(cx, 480, 'About Me', () => {
+      this.scene.start('AboutMe');
     });
   }
 
   createButton(x, y, label, onClick) {
-    const btn = this.add.rectangle(x, y, 220, 55, 0x333366)
+    const btn = this.add.rectangle(x, y, 280, 55, 0x333366)
       .setInteractive()
-      .on('pointerover', () => btn.setFillStyle(0x5555aa))   // hover
-      .on('pointerout', () => btn.setFillStyle(0x333366))    // unhover
-      .on('pointerdown', onClick);                            // click
+      .on('pointerover', () => btn.setFillStyle(0x5555aa))
+      .on('pointerout', () => btn.setFillStyle(0x333366))
+      .on('pointerdown', onClick);
 
     this.add.text(x, y, label, {
       fontSize: '24px',
