@@ -35,43 +35,42 @@ class AllTimeHighs extends Phaser.Scene {
   this.showDifficultySelect();
   }
 
-  showDifficultySelect() {
-    const cx = 400;
+showDifficultySelect() {
+  const cx = this.scale.width / 2;  // this gives 960 automatically
 
-    this.add.text(cx, 150, 'All Time Highs', {
-      fontSize: '48px',
-      fill: '#ffffff'
-    }).setOrigin(0.5).setScrollFactor(0);
+  this.add.text(cx, 150, 'All Time Highs', {
+    fontSize: '48px',
+    fill: '#ffffff'
+  }).setOrigin(0.5).setScrollFactor(0);
 
-    this.add.text(cx, 220, 'Select candle interval:', {
-      fontSize: '20px',
-      fill: '#aaaaaa'
-    }).setOrigin(0.5).setScrollFactor(0);
+  this.add.text(cx, 220, 'Select candle interval:', {
+    fontSize: '20px',
+    fill: '#aaaaaa'
+  }).setOrigin(0.5).setScrollFactor(0);
 
-    const difficulties = [
-      { label: '1 Minute', multiplier: 1 },
-      { label: '5 Minute', multiplier: 5 },
-      { label: '15 Minute', multiplier: 15 },
-      { label: '30 Minute', multiplier: 30 },
-      { label: '1 Hour', multiplier: 60 }
-    ];
+  const difficulties = [
+    { label: '1 Minute', multiplier: 1 },
+    { label: '5 Minute', multiplier: 5 },
+    { label: '15 Minute', multiplier: 15 },
+    { label: '30 Minute', multiplier: 30 },
+    { label: '1 Hour', multiplier: 60 }
+  ];
 
-    difficulties.forEach((diff, i) => {
-      this.createButton(cx, 290 + i * 65, diff.label, () => {
-        this.multiplier = diff.multiplier;
-        this.startGame();
-      });
+  difficulties.forEach((diff, i) => {
+    this.createButton(cx, 290 + i * 65, diff.label, () => {
+      this.multiplier = diff.multiplier;
+      this.startGame();
     });
+  });
 
-    // Back button
-    const back = this.add.text(16, 460, '← Title', {
-      fontSize: '16px',
-      fill: '#aaaaaa'
-    }).setScrollFactor(0).setInteractive()
-      .on('pointerover', () => back.setStyle({ fill: '#ffffff' }))
-      .on('pointerout', () => back.setStyle({ fill: '#aaaaaa' }))
-      .on('pointerdown', () => this.scene.start('TitleScene'));
-  }
+  const back = this.add.text(40, 40, '← Title', {
+    fontSize: '16px',
+    fill: '#aaaaaa'
+  }).setScrollFactor(0).setInteractive()
+    .on('pointerover', () => back.setStyle({ fill: '#ffffff' }))
+    .on('pointerout', () => back.setStyle({ fill: '#aaaaaa' }))
+    .on('pointerdown', () => this.scene.start('TitleScene'));
+}
 
   createButton(x, y, label, onClick) {
     const btn = this.add.rectangle(x, y, 220, 50, 0x333366)
