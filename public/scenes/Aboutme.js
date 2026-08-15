@@ -1,6 +1,6 @@
-class AboutMe extends Phaser.Scene {
+class Aboutme extends Phaser.Scene {
   constructor() {
-    super({ key: 'AboutMe' });
+    super({ key: 'Aboutme' });
   }
 
   preload() {
@@ -23,7 +23,7 @@ class AboutMe extends Phaser.Scene {
     this.physics.add.collider(this.player, ground);
 
     // Placeholder text
-    this.add.text(960, 400, 'About Me', {
+    this.add.text(960, 400, 'About me', {
       fontSize: '64px',
       fill: '#ffffff'
     }).setOrigin(0.5).setScrollFactor(0);

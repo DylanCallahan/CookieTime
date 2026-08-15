@@ -8,7 +8,7 @@ const config = {
     default: 'arcade',
     arcade: { gravity: { y: 600 }, debug: false }
   },
-  scene: [TitleScene, AboutMe , AllTimeHighs]
+  scene: [TitleScene, Aboutme , AllTimeHighs]
 };
 
 const game = new Phaser.Game(config);

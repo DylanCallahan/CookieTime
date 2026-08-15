@@ -24,7 +24,7 @@ class TitleScene extends Phaser.Scene {
     });
 
     this.createButton(cx, 480, 'About Me', () => {
-      this.scene.start('AboutMe');
+      this.scene.start('Aboutme');
     });
   }
 
